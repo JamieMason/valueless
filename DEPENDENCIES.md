@@ -20,7 +20,7 @@ npm test
 
 ## Dependencies
 
-None
+- [commander](https://github.com/tj/commander.js): the complete solution for node.js command-line programs
 
 ## Dev Dependencies
 

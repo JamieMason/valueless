@@ -1,3 +1,13 @@
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/JamieMason/valueless/compare/0.2.0...0.3.0) (2017-09-01)
+
+
+### Features
+
+* **core:** add optional prefix to values ([a04a9cc](https://github.com/JamieMason/valueless/commit/a04a9cc)), closes [#2](https://github.com/JamieMason/valueless/issues/2)
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/JamieMason/valueless/compare/0.1.0...0.2.0) (2017-09-01)
 
