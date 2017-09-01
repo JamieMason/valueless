@@ -2,6 +2,9 @@
   "name": "valueless",
   "version": "0.1.0",
   "author": "Jamie Mason <jamie@foldleft.io> (https://github.com/JamieMason)",
+  "bin": {
+    "valueless": "bin.js"
+  },
   "devDependencies": {
     "jasmine-expect": "3.7.1",
     "jest": "18.1.0"

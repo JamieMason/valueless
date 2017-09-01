@@ -20,11 +20,25 @@ npm install --save-dev valueless
 
 ## Usage
 
+### Node.js
+
 ```js
 import valueless from 'valueless';
 
 valueless({ foo: [true], bar: [{ baz: null }] });
 // => { bar: [{ baz: 'bar.0.baz' }], foo: ['foo.0'] }
+```
+
+### Command Line
+
+```
+echo '[["ivo"],["marloes"]]' | valueless
+```
+
+outputs
+
+```json
+[["0.0"],["1.0"]]
 ```
 
 ## Background

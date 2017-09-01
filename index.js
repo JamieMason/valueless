@@ -1,8 +1,11 @@
-module.exports = function valueless(json) {
+module.exports = valueless;
+module.exports.readStdin = readStdin;
+
+function valueless(json) {
   var result = clone(json);
   iterator(result, []);
   return result;
-};
+}
 
 function iterator(value, path) {
   if (isArray(value)) {
@@ -38,4 +41,18 @@ function isArray(value) {
 
 function isObject(value) {
   return Object.prototype.toString.call(value) === '[object Object]';
+}
+
+function readStdin(stdin, stdout) {
+  var json = '';
+  stdin.resume();
+  stdin.on('data', onData);
+  stdin.on('end', onEnd);
+
+  function onData(buffer) {
+    json += String(buffer);
+  }
+  function onEnd() {
+    stdout.write(JSON.stringify(valueless(JSON.parse(json))));
+  }
 }
