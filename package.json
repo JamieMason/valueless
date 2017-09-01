@@ -5,6 +5,9 @@
   "bin": {
     "valueless": "bin.js"
   },
+  "dependencies": {
+    "commander": "2.11.0"
+  },
   "devDependencies": {
     "jasmine-expect": "3.7.1",
     "jest": "18.1.0"

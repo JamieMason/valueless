@@ -27,6 +27,9 @@ import valueless from 'valueless';
 
 valueless({ foo: [true], bar: [{ baz: null }] });
 // => { bar: [{ baz: 'bar.0.baz' }], foo: ['foo.0'] }
+
+valueless('API')({ foo: [true], bar: [{ baz: null }] });
+// => { bar: [{ baz: 'API:bar.0.baz' }], foo: ['API:foo.0'] }
 ```
 
 ### Command Line
@@ -39,6 +42,18 @@ outputs
 
 ```json
 [["0.0"],["1.0"]]
+```
+
+With `--prefix`
+
+```
+echo '[["ivo"],["marloes"]]' | valueless --prefix CMS
+```
+
+outputs
+
+```json
+[["CMS:0.0"],["CMS:1.0"]]
 ```
 
 ## Background

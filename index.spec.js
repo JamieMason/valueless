@@ -1,7 +1,7 @@
 const Readable = require('stream').Readable;
 const valueless = require('./index.js');
 
-describe('valueless()', () => {
+describe('valueless(data)', () => {
   it('transforms shallow arrays', () => {
     expect(valueless(['ivo', 'marloes'])).toEqual(['0', '1']);
   });
@@ -48,12 +48,23 @@ describe('valueless()', () => {
   });
 });
 
-describe('valueless.readStdin(stdin)', () => {
+describe('valueless(name)(data)', () => {
+  it('prefixes values with "name:"', () => {
+    const cmsValueless = valueless('CMS');
+    expect(
+      cmsValueless({
+        ivo: [{ vim: { jan: { ian: [null] } } }]
+      })
+    ).toEqual({ ivo: [{ vim: { jan: { ian: ['CMS:ivo.0.vim.jan.ian.0'] } } }] });
+  });
+});
+
+describe('valueless.readStdin(name, stdin, stdout)', () => {
   let shared = {};
   beforeEach(done => {
     shared.stdin = new Readable();
     shared.stdout = { write: jest.fn() };
-    valueless.readStdin(shared.stdin, shared.stdout);
+    valueless.readStdin('', shared.stdin, shared.stdout);
     shared.stdin.on('end', done);
     shared.stdin.push('[["ivo"],["ma');
     shared.stdin.push('rloes"]]');
