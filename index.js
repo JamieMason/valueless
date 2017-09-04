@@ -2,31 +2,37 @@ module.exports = valueless;
 module.exports.readStdin = readStdin;
 
 function valueless(json, options) {
-  var data = clone(json);
   options = options || {};
-  prefix = options.prefix ? options.prefix + ':' : '';
-  iterator(prefix, data, []);
+  var data = clone(json);
+  var prefix = options.prefix ? options.prefix + ':' : '';
+  var excludes = (options.excludes || []).reduce(indexByValue, {});
+  iterator(prefix, excludes, data, []);
   return data;
 }
 
-function iterator(prefix, value, path) {
+function iterator(prefix, excludes, value, path) {
   if (isArray(value)) {
     for (var i = 0, len = value.length; i < len; i++) {
-      visitNode(prefix, value, path, i);
+      visitNode(prefix, excludes, value, path, i);
     }
   } else if (isObject(value)) {
     for (var i in value) {
-      visitNode(prefix, value, path, i);
+      visitNode(prefix, excludes, value, path, i);
     }
   }
 }
 
-function visitNode(prefix, value, path, i) {
+function visitNode(prefix, excludes, value, path, i) {
   if (isValue(value[i])) {
-    value[i] = prefix + path.concat(i).join('.');
+    value[i] = i in excludes ? value[i] : prefix + path.concat(i).join('.');
   } else {
-    iterator(prefix, value[i], path.concat(i));
+    iterator(prefix, excludes, value[i], path.concat(i));
   }
+}
+
+function indexByValue(index, value) {
+  index[value] = value;
+  return index;
 }
 
 function clone(json) {

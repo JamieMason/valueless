@@ -51,13 +51,32 @@ describe('valueless(data)', () => {
 describe('valueless(data, { prefix: "some-name" })', () => {
   it('prefixes values with "some-name:"', () => {
     expect(
-      valueless(
-        {
-          ivo: [{ vim: { jan: { ian: [null] } } }]
-        },
-        { prefix: 'some-name' }
-      )
+      valueless({ ivo: [{ vim: { jan: { ian: [null] } } }] }, { prefix: 'some-name' })
     ).toEqual({ ivo: [{ vim: { jan: { ian: ['some-name:ivo.0.vim.jan.ian.0'] } } }] });
+  });
+});
+
+describe('valueless(data, { excludes: ["id", "foreignId"] })', () => {
+  it('preserves the original values of keys in the excludes array', () => {
+    expect(
+      valueless([{ name: 'coco', gender: 'female' }, { name: 'leo', gender: 'male' }], {
+        excludes: ['name']
+      })
+    ).toEqual([{ name: 'coco', gender: '0.gender' }, { name: 'leo', gender: '1.gender' }]);
+  });
+});
+
+describe('valueless(data, { excludes: ["id", "foreignId"], prefix: "some-name" })', () => {
+  it('preserves the original values of keys in the excludes array and prefixes values with "some-name:"', () => {
+    expect(
+      valueless([{ name: 'coco', gender: 'female' }, { name: 'leo', gender: 'male' }], {
+        excludes: ['name'],
+        prefix: 'some-name'
+      })
+    ).toEqual([
+      { name: 'coco', gender: 'some-name:0.gender' },
+      { name: 'leo', gender: 'some-name:1.gender' }
+    ]);
   });
 });
 

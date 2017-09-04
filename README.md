@@ -25,36 +25,36 @@ npm install --save-dev valueless
 ```js
 import valueless from 'valueless';
 
-valueless({ foo: [true], bar: [{ baz: null }] });
-// => { bar: [{ baz: 'bar.0.baz' }], foo: ['foo.0'] }
+const data = [{
+  id: 1,
+  name: 'Marloes'
+}, {
+  id: 2,
+  name: 'Rutger'
+}];
 
-valueless({ foo: [true], bar: [{ baz: null }] }, { prefix: 'API' });
-// => { bar: [{ baz: 'API:bar.0.baz' }], foo: ['API:foo.0'] }
+valueless(data);
+// => [{ id: '0.id', name: '0.name' }, { id: '1.id', name: '1.name' }]
+
+valueless(data, { excludes: ['id'] });
+// => [{ id: 1, name: '0.name' }, { id: 2, name: '1.name' }]
+
+valueless(data, { prefix: 'API' });
+// => [{ id: 'API:0.id', name: 'API:0.name' }, { id: 'API:1.id', name: 'API:1.name' }]
+
+valueless(data, { excludes: ['id'], prefix: 'API' });
+// => [{ id: 1, name: 'API:0.name' }, { id: 2, name: 'API:1.name' }]
 ```
 
 ### Command Line
 
 ```
-echo '[["ivo"],["marloes"]]' | valueless
+echo '[["Serialised"],["JSON"]]' | valueless
+echo '[["Serialised"],["JSON"]]' | valueless --prefix CMS
+echo '[["Serialised"],["JSON"]]' | valueless --excludes foo,bar,baz
 ```
 
-outputs
-
-```json
-[["0.0"],["1.0"]]
-```
-
-With `--prefix`
-
-```
-echo '[["ivo"],["marloes"]]' | valueless --prefix CMS
-```
-
-outputs
-
-```json
-[["CMS:0.0"],["CMS:1.0"]]
-```
+See `valueless --help` for more information.
 
 ## Background
 
