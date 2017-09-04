@@ -48,14 +48,16 @@ describe('valueless(data)', () => {
   });
 });
 
-describe('valueless(name)(data)', () => {
-  it('prefixes values with "name:"', () => {
-    const cmsValueless = valueless('CMS');
+describe('valueless(data, { prefix: "some-name" })', () => {
+  it('prefixes values with "some-name:"', () => {
     expect(
-      cmsValueless({
-        ivo: [{ vim: { jan: { ian: [null] } } }]
-      })
-    ).toEqual({ ivo: [{ vim: { jan: { ian: ['CMS:ivo.0.vim.jan.ian.0'] } } }] });
+      valueless(
+        {
+          ivo: [{ vim: { jan: { ian: [null] } } }]
+        },
+        { prefix: 'some-name' }
+      )
+    ).toEqual({ ivo: [{ vim: { jan: { ian: ['some-name:ivo.0.vim.jan.ian.0'] } } }] });
   });
 });
 
@@ -64,7 +66,7 @@ describe('valueless.readStdin(name, stdin, stdout)', () => {
   beforeEach(done => {
     shared.stdin = new Readable();
     shared.stdout = { write: jest.fn() };
-    valueless.readStdin('', shared.stdin, shared.stdout);
+    valueless.readStdin(shared.stdin, shared.stdout, { name: '' });
     shared.stdin.on('end', done);
     shared.stdin.push('[["ivo"],["ma');
     shared.stdin.push('rloes"]]');

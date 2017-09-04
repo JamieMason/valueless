@@ -28,7 +28,7 @@ import valueless from 'valueless';
 valueless({ foo: [true], bar: [{ baz: null }] });
 // => { bar: [{ baz: 'bar.0.baz' }], foo: ['foo.0'] }
 
-valueless('API')({ foo: [true], bar: [{ baz: null }] });
+valueless({ foo: [true], bar: [{ baz: null }] }, { prefix: 'API' });
 // => { bar: [{ baz: 'API:bar.0.baz' }], foo: ['API:foo.0'] }
 ```
 

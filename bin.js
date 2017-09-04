@@ -10,4 +10,6 @@ program
 
 program.parse(process.argv);
 
-valueless.readStdin(program.prefix, process.stdin, process.stdout);
+valueless.readStdin(process.stdin, process.stdout, {
+  prefix: program.prefix
+});

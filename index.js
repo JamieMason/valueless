@@ -1,14 +1,12 @@
 module.exports = valueless;
 module.exports.readStdin = readStdin;
 
-function valueless(value) {
-  return isString(value) ? transform.bind(null, value + ':') : transform('', value);
-}
-
-function transform(prefix, json) {
-  var result = clone(json);
-  iterator(prefix, result, []);
-  return result;
+function valueless(json, options) {
+  var data = clone(json);
+  options = options || {};
+  prefix = options.prefix ? options.prefix + ':' : '';
+  iterator(prefix, data, []);
+  return data;
 }
 
 function iterator(prefix, value, path) {
@@ -51,9 +49,9 @@ function isString(value) {
   return typeof value === 'string';
 }
 
-function readStdin(prefix, stdin, stdout) {
+function readStdin(stdin, stdout, options) {
   var json = '';
-  prefix = prefix ? prefix + ':' : '';
+
   stdin.resume();
   stdin.on('data', onData);
   stdin.on('end', onEnd);
@@ -61,7 +59,8 @@ function readStdin(prefix, stdin, stdout) {
   function onData(buffer) {
     json += String(buffer);
   }
+
   function onEnd() {
-    stdout.write(JSON.stringify(transform(prefix, JSON.parse(json))));
+    stdout.write(JSON.stringify(valueless(JSON.parse(json), options)));
   }
 }
